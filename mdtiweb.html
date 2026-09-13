@@ -526,7 +526,10 @@ function show(id){
   document.getElementById(id).classList.add('active');
 }
 
+let isAdvancing = false;
+
 function renderQuestion(){
+  isAdvancing = false;
   const q = QUESTIONS[current];
   const axis = AXIS[q.axis];
   document.getElementById('qCount').textContent = `질문 ${current+1} / ${QUESTIONS.length}`;
@@ -551,6 +554,10 @@ function renderQuestion(){
 }
 
 function selectOption(letter){
+  // 짧은 시간 안에 같은 문항에서 버튼이 두 번 눌리는 것(더블탭)을 막는 잠금장치
+  if(isAdvancing) return;
+  isAdvancing = true;
+
   answers[current] = letter;
   if(current < QUESTIONS.length-1){
     current++;
